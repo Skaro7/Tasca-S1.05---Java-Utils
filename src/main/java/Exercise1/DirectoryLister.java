@@ -36,21 +36,12 @@ public class DirectoryLister {
             return;
         }
 
-        Arrays.sort(files);
+        Arrays.sort(files, (o1, o2) -> o1.getName().compareTo(o2.getName()));
 
-        if (files != null) {
-            Arrays.sort(files, new Comparator<File>() {
-                @Override
-                public int compare(File o1, File o2) {
-                    return o1.getName().compareTo(o2.getName());
-                }
-            });
-
-            for (File file : files) {
-                System.out.println(file.getName());
-            }
-
-            sc.close();
+        for (File file : files) {
+            System.out.println(file.getName());
         }
+
+        sc.close();
     }
 }
