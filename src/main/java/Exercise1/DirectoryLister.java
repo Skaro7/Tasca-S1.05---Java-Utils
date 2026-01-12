@@ -7,13 +7,14 @@ import java.util.Scanner;
 public class DirectoryLister {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter a directory path:");
+
         String directoryPath = sc.nextLine().trim();
 
         File directory = new File(directoryPath);
 
-        System.out.println("Enter a directory path");
-
-        //Dosn't exist
+        //Doesn't exist
         if (!directory.exists()) {
             System.out.println("Directory does not exist");
             sc.close();
