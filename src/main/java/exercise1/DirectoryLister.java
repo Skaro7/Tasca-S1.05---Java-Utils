@@ -1,4 +1,4 @@
-package Exercise1;
+package exercise1;
 
 import java.io.File;
 import java.util.Arrays;
@@ -6,25 +6,24 @@ import java.util.Scanner;
 
 public class DirectoryLister {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter a directory path:");
 
-        String directoryPath = sc.nextLine().trim();
+        String directoryPath = scanner.nextLine().trim();
 
         File directory = new File(directoryPath);
 
-        //Doesn't exist
         if (!directory.exists()) {
             System.out.println("Directory does not exist");
-            sc.close();
+            scanner.close();
             return;
         }
 
-        //Is not a directory
+
         if (!directory.isDirectory()) {
             System.out.println("Path is not a directory");
-            sc.close();
+            scanner.close();
             return;
         }
 
@@ -32,7 +31,7 @@ public class DirectoryLister {
 
         if (files == null) {
             System.out.println("Error reading directory");
-            sc.close();
+            scanner.close();
             return;
         }
 
@@ -42,6 +41,6 @@ public class DirectoryLister {
             System.out.println(file.getName());
         }
 
-        sc.close();
+        scanner.close();
     }
 }

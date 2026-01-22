@@ -1,9 +1,10 @@
-package Exercise5;
+package exercise5;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class CarSerializer {
@@ -17,13 +18,13 @@ public class CarSerializer {
         }
     }
 
-    public static Car deserializeCar(String filename) {
+    public static Optional<Car> deserializeCar(String filename) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
             Car car = (Car) ois.readObject();
-            return car;
+            return Optional.of(car);
         } catch (Exception e) {
-            System.out.println("Error loading car");
-            return null;
+            System.out.println("Error loading car: " + e.getMessage());
+            return Optional.empty();
         }
     }
 
@@ -47,16 +48,16 @@ public class CarSerializer {
         System.out.print("\nEnter filename to save (e.g., car.ser): ");
         String filename = scanner.nextLine().trim();
 
-        // SERIALIZE (save to file)
         serializeCar(car, filename);
 
-        // DESERIALIZE (load from file)
-        Car loadedCar = deserializeCar(filename);
+        Optional<Car> loadedCarOptional = deserializeCar(filename);
 
-        if (loadedCar != null) {
+        if (loadedCarOptional.isPresent()) {
+            Car loadedCar = loadedCarOptional.get();
             System.out.println("Car deserialized from " + filename);
             System.out.println("Loaded car: " + loadedCar);
         }
+
         scanner.close();
     }
 }

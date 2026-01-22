@@ -1,13 +1,15 @@
-package Exercise2;
+package exercise3;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class DirectoryTreeLister {
+public class DirectoryTreeToFile {
 
-    public static void listDirectoryTree(File directory, String indent) {
+    public static void listDirectoryTreeToFile(File directory, String indent, PrintWriter writer) {
         File[] files = directory.listFiles();
 
         if (files == null) {
@@ -21,10 +23,10 @@ public class DirectoryTreeLister {
         for (File file : files) {
             String type = file.isDirectory() ? "D" : "F";
             String lastModified = dateFormat.format(file.lastModified());
-            System.out.println(indent + file.getName() + " (" + type + ") - Last modified: " + lastModified);
+            writer.println(indent + file.getName() + " (" + type + ") - Last modified: " + lastModified);
 
             if (file.isDirectory()) {
-                listDirectoryTree(file, indent + "  ");
+                listDirectoryTreeToFile(file, indent + "  ", writer);
             }
         }
     }
@@ -34,6 +36,9 @@ public class DirectoryTreeLister {
 
         System.out.print("Enter a directory path: ");
         String path = scanner.nextLine().trim();
+
+        System.out.print("Enter output file name (e.g., output.txt): ");
+        String outputFileName = scanner.nextLine().trim();
         scanner.close();
 
         File directory = new File(path);
@@ -48,7 +53,14 @@ public class DirectoryTreeLister {
             return;
         }
 
-        System.out.println("Directory tree for: " + directory.getAbsolutePath());
-        listDirectoryTree(directory, "");
+        try {
+            PrintWriter writer = new PrintWriter(new FileWriter(outputFileName));
+            writer.println("Directory tree for: " + directory.getAbsolutePath());
+            listDirectoryTreeToFile(directory, "", writer);
+            writer.close();
+            System.out.println("Directory tree saved to: " + outputFileName);
+        } catch (Exception e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
     }
 }
